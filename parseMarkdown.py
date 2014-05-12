@@ -1,3 +1,6 @@
+#install using easy-install
+#$ pip install markdown
+#current version 2.4
 import markdown
 import os
 import codecs
