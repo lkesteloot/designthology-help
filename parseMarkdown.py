@@ -6,14 +6,24 @@ import os
 import codecs
 import sys
 
-header = """<!DOCTYPE html><html><head>
-        <title>designthology</title>
-        <link rel="stylesheet" type="text/css" href="/static/css/home.css">
-        <link rel="shortcut icon" href="/static/favicon.ico?fd00191b7d" type="image/x-icon">
-        <link rel="icon" href="/static/favicon.ico?fd00191b7d" type="image/x-icon">
-    </head><body>"""
+header = """<!DOCTYPE html>
+<html>
+    <head>
+        <title>designthology help</title>
+        <link rel="stylesheet" href="/static/css/idwebtool.css">
+        <link rel="stylesheet" href="/static/css/bootstrap.css">
+        <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+        <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body id="help_page">
+         <div class="container">
+"""
 
-footer = """</body></html>"""
+footer = """        </div>
+    </body>
+</html>"""
 
 def createHTMLHeirarchy(init, destination):
     for root, dirs, files in os.walk(init):
