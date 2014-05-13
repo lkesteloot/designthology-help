@@ -27,6 +27,6 @@ The schedule report generates schedules for any category you'd like - some comme
 
 You control the page size, orientation, and fields that are shown on the printed report. 
 
-If you've [uploaded your own logo](link here), you'll see it in the report preview and on the printer report. 
+If you've [uploaded your own logo](user-settings), you'll see it in the report preview and on the printer report. 
 
 Click the *Download CSV* button to download the report into a comma separated values file that can be opened in a spreadsheet program like Microsoft Excel.
