@@ -5,6 +5,7 @@ import markdown
 import os
 import codecs
 import sys
+import HTMLFile
 
 header = """<!DOCTYPE html>
 <html>
@@ -26,7 +27,7 @@ header = """<!DOCTYPE html>
          <div class="container">
 """
 
-footer = """        </div>
+footer = """</div>
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -38,19 +39,46 @@ footer = """        </div>
     </body>
 </html>"""
 
+
 def createHTMLHeirarchy(init, destination):
+    global header
+    html_files = []
+    #walk the directory tree
+    #   for each file in directory
+    #       if file is a markdown file
+    #           create an html file in corresponding destination directory
+    #           push file to html_files list
     for root, dirs, files in os.walk(init):
         for name in files:
             basename, extension = os.path.splitext(name)
             if extension == ".md":
-                createHTMLFile(root, basename, destination)
+                html_files.append(createHTMLFile(root, basename, destination))
+    contents_div = '''<div class="contents"><ul>'''
 
+    #sort files based on order attribute in markdown meta-data
+    sorted(html_files, key = lambda k: k.markdown_header[u'order'][0])
+
+    #adding titles to contents as an unordered list
+    for file in html_files:
+        contents_div += '''<li><a href="''' + file.pathname + '''">''' + file.markdown_header[u'title'][0] + '''</a></li>'''
+
+    contents_div += '''</ul></div>'''
+    header += contents_div
+    writeFiles(html_files)
+
+#uses markdown module to parse markdown file into html file
+#and markdown meta-data
+#see http://pythonhosted.org/Markdown/extensions/meta_data.html
+#for markdown header specification
 def parseMarkdown(file):
-    text = codecs.open(file, 'r', encoding = 'utf8')
-    return markdown.markdown(text.read(), ["toc", "smarty"])
+    f = codecs.open(file, 'r', encoding = 'utf8')
+    md = markdown.Markdown(extensions = ["toc", "smarty", "meta"])
+    text = md.convert(f.read())
+    return [md.Meta, text]
 
 #Takes a markdown file and 
 #creates a designthology html file.
+#returns an HTMLFile object
 def createHTMLFile(root, baseName, destination):
     pathname = os.path.join(destination, root)
     if not os.path.exists(pathname):
@@ -59,11 +87,16 @@ def createHTMLFile(root, baseName, destination):
     input_pathname = os.path.join(root, baseName + ".md")
     output_pathname = os.path.join(destination, root, baseName + ".html")
 
-    html = parseMarkdown(input_pathname)
-    file = open(output_pathname, 'w')
-    file.write(header)
-    file.write(html)
-    file.write(footer)
-    file.close()
+    markdown_header, html = parseMarkdown(input_pathname)
+    return HTMLFile.HTMLFile(output_pathname, markdown_header, html)
+
+#file_array is an array of HTMLFile objects
+def writeFiles(file_array):
+    for html_file in file_array:
+        file = open(html_file.pathname, 'w')
+        file.write(header)
+        file.write(html_file.text)
+        file.write(footer)
+        file.close()
 
 createHTMLHeirarchy(sys.argv[1], sys.argv[2])
