@@ -26,9 +26,13 @@ header = """<!DOCTYPE html>
             </div>
         </div>
          <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="tableOfContents">
 """
 
-footer = """</div>
+footer = """        </div>
+        </div>
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -50,16 +54,18 @@ def createHTMLHeirarchy(init, destination):
         basename, extension = os.path.splitext(markdownFile)
         html_files.append(createHTMLFile(init, basename, destination))
 
-    contents_div = '''<div class="contents"><ul>'''
+    contents_div = '''<ul>'''
 
     #sort files based on order attribute in markdown meta-data
     html_files.sort(key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
 
     #adding titles to contents as an unordered list
     for file in html_files:
-        contents_div += '''<li><a href="''' + file.basename + '''">''' + file.markdown_header.get(u'title', ["Untitled"])[0] + '''</a></li>'''
+        filename = os.path.basename(file.basename)
+        title = file.markdown_header.get(u'title', ["Untitled"])[0]
+        contents_div += '''<li><a href="''' + filename + '''">''' + title + '''</a></li>'''
 
-    contents_div += '''</ul></div>'''
+    contents_div += '''</ul></div></div><div class="col-md-9">'''
     header += contents_div
     writeFiles(html_files)
 

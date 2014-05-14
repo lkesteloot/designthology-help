@@ -1,3 +1,6 @@
+Title: User Settings
+Order: 400
+
 # User Settings
 
 ## How do I attach my own logo to customize tear sheets and reports?

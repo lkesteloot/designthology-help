@@ -1,3 +1,6 @@
+Title: Reports
+Order: 300
+
 Reports
 
 # What is the budget report for?
