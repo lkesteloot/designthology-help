@@ -56,11 +56,11 @@ def createHTMLHeirarchy(init, destination):
     contents_div = '''<div class="contents"><ul>'''
 
     #sort files based on order attribute in markdown meta-data
-    sorted(html_files, key = lambda k: k.markdown_header[u'order'][0])
+    sorted(html_files, key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
 
     #adding titles to contents as an unordered list
     for file in html_files:
-        contents_div += '''<li><a href="''' + file.pathname + '''">''' + file.markdown_header[u'title'][0] + '''</a></li>'''
+        contents_div += '''<li><a href="''' + file.pathname + '''">''' + file.markdown_header.get(u'title', ["Untitled"])[0] + '''</a></li>'''
 
     contents_div += '''</ul></div>'''
     header += contents_div

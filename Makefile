@@ -1,5 +1,5 @@
 
-.PHONY: default dev prod
+.PHONY: default dev prod local
 
 HELP_PATH=/opt/idwebtool/help
 
@@ -11,3 +11,6 @@ dev:
 
 prod:
 	python parseMarkdown.py . $(HELP_PATH)
+
+local:
+	python parseMarkdown.py . html
