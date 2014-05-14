@@ -1,6 +1,6 @@
 Title: Overview
 Order: 0
 
-# Designthology Help
+# Designthology
 
 Welcome to Designthology!

@@ -29,8 +29,10 @@ header = """<!DOCTYPE html>
             <div class="row">
                 <div class="col-md-3">
                     <div class="tableOfContents">
+                        <h1>Help</h1>
 """
 
+separator = '''</div></div><div class="col-md-9">'''
 footer = """        </div>
         </div>
         <script>
@@ -54,19 +56,8 @@ def createHTMLHeirarchy(init, destination):
         basename, extension = os.path.splitext(markdownFile)
         html_files.append(createHTMLFile(init, basename, destination))
 
-    contents_div = '''<ul>'''
-
     #sort files based on order attribute in markdown meta-data
     html_files.sort(key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
-
-    #adding titles to contents as an unordered list
-    for file in html_files:
-        filename = os.path.basename(file.basename)
-        title = file.markdown_header.get(u'title', ["Untitled"])[0]
-        contents_div += '''<li><a href="''' + filename + '''">''' + title + '''</a></li>'''
-
-    contents_div += '''</ul></div></div><div class="col-md-9">'''
-    header += contents_div
     writeFiles(html_files)
 
 #def createHTMLHeirarchy(init, destination):
@@ -101,7 +92,7 @@ def createHTMLHeirarchy(init, destination):
 #for markdown header specification
 def parseMarkdown(file):
     f = codecs.open(file, 'r', encoding = 'utf8')
-    md = markdown.Markdown(extensions = ["toc", "smarty", "meta"])
+    md = markdown.Markdown(extensions = ["smarty", "meta"])
     text = md.convert(f.read())
     return [md.Meta, text]
 
@@ -119,11 +110,30 @@ def createHTMLFile(root, baseName, destination):
     markdown_header, html = parseMarkdown(input_pathname)
     return HTMLFile.HTMLFile(output_pathname, baseName + ".html", markdown_header, html)
 
+def generateToc(html_files, html_file):
+    toc = '''<ul>'''
+
+    #adding titles to contents as an unordered list
+    for file in html_files:
+        filename = os.path.basename(file.basename)
+        title = file.markdown_header.get(u'title', ["Untitled"])[0]
+
+        toc += '''<li'''
+        if file is html_file:
+            toc += ''' class="currentHelpPage"'''
+        toc += '''><a href="''' + filename + '''">''' + title + '''</a></li>'''
+
+    toc += '''</ul>'''
+
+    return toc
+
 #file_array is an array of HTMLFile objects
 def writeFiles(file_array):
     for html_file in file_array:
         file = open(html_file.pathname, 'w')
         file.write(header)
+        file.write(generateToc(file_array, html_file))
+        file.write(separator)
         file.write(html_file.text)
         file.write(footer)
         file.close()
