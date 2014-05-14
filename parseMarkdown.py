@@ -6,6 +6,7 @@ import os
 import codecs
 import sys
 import HTMLFile
+import glob
 
 header = """<!DOCTYPE html>
 <html>
@@ -42,29 +43,51 @@ footer = """</div>
 
 def createHTMLHeirarchy(init, destination):
     global header
+    md_files = glob.glob(os.path.join(init, '*.md'))
     html_files = []
-    #walk the directory tree
-    #   for each file in directory
-    #       if file is a markdown file
-    #           create an html file in corresponding destination directory
-    #           push file to html_files list
-    for root, dirs, files in os.walk(init):
-        for name in files:
-            basename, extension = os.path.splitext(name)
-            if extension == ".md":
-                html_files.append(createHTMLFile(root, basename, destination))
+
+    for markdownFile in md_files:
+        basename, extension = os.path.splitext(markdownFile)
+        html_files.append(createHTMLFile(init, basename, destination))
+
     contents_div = '''<div class="contents"><ul>'''
 
     #sort files based on order attribute in markdown meta-data
-    sorted(html_files, key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
+    html_files.sort(key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
 
     #adding titles to contents as an unordered list
     for file in html_files:
-        contents_div += '''<li><a href="''' + file.pathname + '''">''' + file.markdown_header.get(u'title', ["Untitled"])[0] + '''</a></li>'''
+        contents_div += '''<li><a href="''' + file.basename + '''">''' + file.markdown_header.get(u'title', ["Untitled"])[0] + '''</a></li>'''
 
     contents_div += '''</ul></div>'''
     header += contents_div
     writeFiles(html_files)
+
+#def createHTMLHeirarchy(init, destination):
+    #global header
+    #html_files = []
+    ##walk the directory tree
+    ##   for each file in directory
+    ##       if file is a markdown file
+    ##           create an html file in corresponding destination directory
+    ##           push file to html_files list
+    #for root, dirs, files in os.walk(init):
+        #for name in files:
+            #basename, extension = os.path.splitext(name)
+            #if extension == ".md":
+                #html_files.append(createHTMLFile(root, basename, destination))
+    #contents_div = '''<div class="contents"><ul>'''
+#
+    ##sort files based on order attribute in markdown meta-data
+    #sorted(html_files, key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
+#
+    ##adding titles to contents as an unordered list
+    #for file in html_files:
+        #contents_div += '''<li><a href="''' + file.pathname + '''">''' + file.markdown_header.get(u'title', ["Untitled"])[0] + '''</a></li>'''
+#
+    #contents_div += '''</ul></div>'''
+    #header += contents_div
+    #writeFiles(html_files)
 
 #uses markdown module to parse markdown file into html file
 #and markdown meta-data
@@ -85,10 +108,10 @@ def createHTMLFile(root, baseName, destination):
         os.makedirs(pathname)
 
     input_pathname = os.path.join(root, baseName + ".md")
-    output_pathname = os.path.join(destination, root, baseName + ".html")
+    output_pathname = os.path.join(destination, baseName + ".html")
 
     markdown_header, html = parseMarkdown(input_pathname)
-    return HTMLFile.HTMLFile(output_pathname, markdown_header, html)
+    return HTMLFile.HTMLFile(output_pathname, baseName + ".html", markdown_header, html)
 
 #file_array is an array of HTMLFile objects
 def writeFiles(file_array):
