@@ -12,10 +12,10 @@ You can add links and attachments to your Designthology items. This is great bec
 
 1. Open a browser tab and navigate to the web page you'd like to link to your item.
 2. Copy the address from the address bar. 
-![](flower.JPG "image of borwser address bar with address")
+![](LinkAddress.png)
 3. Navigate to your designthology.com item page.
 4. Make sure your item is saved, then click the **Add Link** button toward the top of the screen.
-![](flower.JPG "image of add link button")
+![](AddLink.png)
 5. In the "Add Link" window, paste the web address, and click **Save.**
 ![](flower.JPG "image of add link window with same address pasted in")
 6. A new icon will appear at the top of the page - click it at any time to return to the linked page.
