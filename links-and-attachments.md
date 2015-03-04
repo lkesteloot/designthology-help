@@ -1,6 +1,6 @@
 Title: Links and Attachments
 Order: 200
-![](flower.JPG)
+
 # Links and Attachments
 
 You can add links and attachments to your Designthology items. This is great because: 
