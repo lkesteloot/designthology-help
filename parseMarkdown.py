@@ -1,14 +1,14 @@
-#install using pip or easy_install:
-#$ pip install markdown
-#current version 2.4
+# install using pip or easy_install:
+# $ pip install markdown
+# current version 2.4
 import markdown
 import os
 import codecs
 import sys
-import HTMLFile
 import glob
+import shutil
 
-header = """<!DOCTYPE html>
+HEADER = """<!DOCTYPE html>
 <html>
     <head>
         <title>designthology help</title>
@@ -32,8 +32,8 @@ header = """<!DOCTYPE html>
                         <h1>Help</h1>
 """
 
-separator = '''</div></div><div class="col-md-9">'''
-footer = """        </div>
+SEPARATOR = '''</div></div><div class="col-md-9">'''
+FOOTER = """        </div>
         </div>
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -46,80 +46,106 @@ footer = """        </div>
     </body>
 </html>"""
 
+IGNORED_FILES = [".git", ".gitignore"]
 
-def createHTMLHeirarchy(init, destination):
-    global header
-    md_files = glob.glob(os.path.join(init, '*.md'))
-    html_files = []
+class HTMLFile:
+    '''
+    pathname is the full path of the file
+    metadata is the the metadata from the markdown file.
+    '''
+    def __init__(self, pathname, filename, metadata, html):
+        self.pathname = pathname
+        self.filename = filename
+        self.metadata = metadata
+        self.html = html
 
-    for markdownFile in md_files:
-        basename, extension = os.path.splitext(markdownFile)
-        html_files.append(createHTMLFile(init, basename, destination))
+    def getTitle(self):
+        return self.metadata.get(u"title", ["Untitled"])[0]
 
-    #sort files based on order attribute in markdown meta-data
-    html_files.sort(key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
-    writeFiles(html_files)
+    def getOrder(self):
+        return int(self.metadata.get(u"order", ["0"])[0])
 
-#def createHTMLHeirarchy(init, destination):
-    #global header
-    #html_files = []
+def createHTMLHierarchySingleDir(sourceDir, destinationDir):
+    markdownFilenames = glob.glob(os.path.join(sourceDir, "*.md"))
+    htmlFiles = []
+
+    for markdownFilename in markdownFilenames:
+        basename, extension = os.path.splitext(markdownFilename)
+        htmlFiles.append(createHTMLFile(sourceDir, basename, destinationDir))
+
+    # Sort files based on order attribute in markdown meta-data.
+    htmlFiles.sort(key=lambda htmlFile: htmlFile.getOrder())
+    writeFiles(htmlFiles)
+
+# Removes filenames in-place that should be ignored.
+def removeIgnoredFiles(filenames, ignoredFilenames):
+    for ignoredFilename in ignoredFilenames:
+        if ignoredFilename in filenames:
+            filenames.remove(ignoredFilename)
+
+def createHTMLHierarchy(sourceDir, destinationDir):
+    htmlFiles = []
+
     ##walk the directory tree
     ##   for each file in directory
     ##       if file is a markdown file
     ##           create an html file in corresponding destination directory
-    ##           push file to html_files list
-    #for root, dirs, files in os.walk(init):
-        #for name in files:
-            #basename, extension = os.path.splitext(name)
-            #if extension == ".md":
-                #html_files.append(createHTMLFile(root, basename, destination))
-    #contents_div = '''<div class="contents"><ul>'''
-#
-    ##sort files based on order attribute in markdown meta-data
-    #sorted(html_files, key = lambda k: int(k.markdown_header.get(u'order', ["0"])[0]))
-#
-    ##adding titles to contents as an unordered list
-    #for file in html_files:
-        #contents_div += '''<li><a href="''' + file.pathname + '''">''' + file.markdown_header.get(u'title', ["Untitled"])[0] + '''</a></li>'''
-#
-    #contents_div += '''</ul></div>'''
-    #header += contents_div
-    #writeFiles(html_files)
+    ##           push file to htmlFiles list
+    for root, dirs, filenames in os.walk(sourceDir):
+        removeIgnoredFiles(dirs, IGNORED_FILES)
+        removeIgnoredFiles(filenames, IGNORED_FILES)
 
-#uses markdown module to parse markdown file into html file
-#and markdown meta-data
-#see http://pythonhosted.org/Markdown/extensions/meta_data.html
-#for markdown header specification
-def parseMarkdown(file):
-    f = codecs.open(file, 'r', encoding = 'utf8')
+        for filename in filenames:
+            basename, extension = os.path.splitext(filename)
+            if extension == ".md":
+                # Process Markdown.
+                htmlFiles.append(createHTMLFile(root, basename, destinationDir))
+            else:
+                # Copy file.
+                sourcePathname = os.path.join(sourceDir, root, filename)
+                fullDestinationDir = os.path.join(destinationDir, root)
+                shutil.copy(sourcePathname, fullDestinationDir)
+
+    ##sort files based on order attribute in markdown meta-data
+    sorted(htmlFiles, key=lambda htmlFile: htmlFile.getOrder())
+
+    writeFiles(htmlFiles)
+
+# uses markdown module to parse markdown file into html file
+# and markdown meta-data
+# see http://pythonhosted.org/Markdown/extensions/meta_data.html
+# for markdown header specification
+def parseMarkdown(pathname):
+    f = codecs.open(pathname, "r", encoding = "utf8")
     md = markdown.Markdown(extensions = ["smarty", "meta"])
-    text = md.convert(f.read())
-    return [md.Meta, text]
+    html = md.convert(f.read())
+    return md.Meta, html
 
 #Takes a markdown file and 
 #creates a designthology html file.
 #returns an HTMLFile object
-def createHTMLFile(root, baseName, destination):
-    pathname = os.path.join(destination, root)
+def createHTMLFile(root, baseName, destinationDir):
+    pathname = os.path.join(destinationDir, root)
     if not os.path.exists(pathname):
         os.makedirs(pathname)
 
-    input_pathname = os.path.join(root, baseName + ".md")
-    output_pathname = os.path.join(destination, baseName + ".html")
+    inputPathname = os.path.join(root, baseName + ".md")
+    outputFilename = baseName + ".html"
+    outputPathname = os.path.join(destinationDir, root, outputFilename)
 
-    markdown_header, html = parseMarkdown(input_pathname)
-    return HTMLFile.HTMLFile(output_pathname, baseName + ".html", markdown_header, html)
+    metadata, html = parseMarkdown(inputPathname)
+    return HTMLFile(outputPathname, outputFilename, metadata, html)
 
-def generateToc(html_files, html_file):
+def generateToc(htmlFiles, htmlFile):
     toc = '''<ul>'''
 
-    #adding titles to contents as an unordered list
-    for file in html_files:
-        filename = os.path.basename(file.basename)
-        title = file.markdown_header.get(u'title', ["Untitled"])[0]
+    # Adding titles to contents as an unordered list.
+    for tocHtmlFile in htmlFiles:
+        filename = os.path.basename(tocHtmlFile.filename)
+        title = tocHtmlFile.getTitle()
 
         toc += '''<li'''
-        if file is html_file:
+        if tocHtmlFile is htmlFile:
             toc += ''' class="currentHelpPage"'''
         toc += '''><a href="''' + filename + '''">''' + title + '''</a></li>'''
 
@@ -127,15 +153,20 @@ def generateToc(html_files, html_file):
 
     return toc
 
-#file_array is an array of HTMLFile objects
-def writeFiles(file_array):
-    for html_file in file_array:
-        file = open(html_file.pathname, 'w')
-        file.write(header)
-        file.write(generateToc(file_array, html_file))
-        file.write(separator)
-        file.write(html_file.text)
-        file.write(footer)
-        file.close()
+#htmlFileList is an array of HTMLFile objects
+def writeFiles(htmlFileList):
+    for htmlFile in htmlFileList:
+        writeFile(htmlFileList, htmlFile)
 
-createHTMLHeirarchy(sys.argv[1], sys.argv[2])
+def writeFile(htmlFileList, htmlFile):
+    f = open(htmlFile.pathname, "w")
+    f.write(HEADER)
+    f.write(generateToc(htmlFileList, htmlFile))
+    f.write(SEPARATOR)
+    f.write(htmlFile.html)
+    f.write(FOOTER)
+    f.close()
+
+if __name__ == "__main__":
+    createHTMLHierarchy(sys.argv[1], sys.argv[2])
+
