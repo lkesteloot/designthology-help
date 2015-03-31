@@ -1,3 +1,6 @@
+Title: Groups
+Order: 500
+
 # Groups #
 
 ### New this week: Groups! ###
