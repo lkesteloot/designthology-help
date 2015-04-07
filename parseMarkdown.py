@@ -111,9 +111,15 @@ def createHtmlHierarchy(sourceDir, destinationDir):
 # for markdown header specification
 def parseMarkdown(pathname):
     f = codecs.open(pathname, "r", encoding = "utf8")
-    md = markdown.Markdown(extensions = ["smarty", "meta"])
+    md = markdown.Markdown(extensions = ["smarty", "meta", "attr_list"])
     html = md.convert(f.read())
-    return md.Meta, html
+
+    try:
+        metadata = md.Meta
+    except AttributeError:
+        metadata = {}
+
+    return metadata, html
 
 #Takes a markdown file and 
 #creates a designthology html file.
