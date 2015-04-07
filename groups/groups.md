@@ -3,8 +3,18 @@ Order: 500
 
 # Groups #
 
-### New this week: Groups! ###
 Think of groups as folders for items that go together, for example a sofa and its fabric, or a set of draperies which might include hardware, fabric, fabrication, and installation.
+
+When going over a project with your client, you could show them individual line items for each component that goes into the draperies:
+
+![](sample-group.jpg)
+
+Or you may prefer to have a single line item on the budget: 
+
+![](sample-group-collapsed.jpg)
+	 
+
+Either way, you're going to want to track the details for each component independently. Creating a group gives you that flexibility.
 
 To create a Group:
 
