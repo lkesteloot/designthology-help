@@ -1,5 +1,6 @@
 Title: User Settings
 Order: 400
+Hidden: true
 
 # User Settings
 

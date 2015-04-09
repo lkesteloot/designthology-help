@@ -1,5 +1,6 @@
 Title: Links and Attachments
 Order: 200
+Hidden: true
 
 # Links and Attachments
 

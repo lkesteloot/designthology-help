@@ -1,5 +1,6 @@
 Title: Overview
 Order: 0
+Hidden: true
 
 # Designthology
 

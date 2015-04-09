@@ -1,3 +1,7 @@
+Title: Archiving
+Order: 500
+Hidden: true
+
 # Archiving
 
 Archiving is the best way to keep completed items from cluttering your workspace. To archive an item, simply change its status to "Archived."
@@ -19,5 +23,7 @@ The following applies to archived items:
 
 1. They won't appear on the list as you navigate through active items using your arrows.
 2. They won't appear in any reports unless you check the "Show archived items" box in the Project Report.
+
+
 
 

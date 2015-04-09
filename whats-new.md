@@ -1,15 +1,17 @@
+Title: What's New
+Order: 50
+
 # Designthology just keeps getting better! #
 
-##Here's what's new:
-
-
-# This week: Keep it current with Archiving!
+## This week: Keep it current with Archiving!
 April 3, 2015
+{: .date }
 
 
 
-# New this week: Groups!
+## New this week: Groups!
 March 30, 2015
+{: .date }
 
 Think of groups as folders for items that go together, for example a sofa and its fabric, or a set of draperies which might include hardware, fabric, fabrication, and installation.
 
@@ -24,7 +26,8 @@ Or you may prefer to have a single line item on the budget:
 
 Either way, you're going to want to track the details for each component independently. Creating a group gives you that flexibility.
 
-[Read through the help for more detailed information about working with groups.](groups/groups.html "Designthology help topic: Groups")
+[Learn more about groups &raquo;](groups/groups.html "Designthology help topic: Groups")
+{: .learn-more }
 
 ### Existing "old style" groups ###
 
