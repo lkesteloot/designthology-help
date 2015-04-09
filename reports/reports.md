@@ -1,5 +1,6 @@
 Title: Reports
 Order: 300
+Hidden: true
 
 # Reports
 

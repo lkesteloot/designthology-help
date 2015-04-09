@@ -1,5 +1,6 @@
 Title: Item Summary
 Order: 100
+Hidden: true
 
 # Item Summary
 
