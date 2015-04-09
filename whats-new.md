@@ -15,11 +15,11 @@ Think of groups as folders for items that go together, for example a sofa and it
 
 When going over a project with your client, you could show them individual line items for each component that goes into the draperies:
 
-![](/groups/sample-group.jpg)
+![](groups/sample-group.jpg)
 
 Or you may prefer to have a single line item on the budget: 
 
-![](/groups/sample-group-collapsed.jpg)
+![](groups/sample-group-collapsed.jpg)
 	 
 
 Either way, you're going to want to track the details for each component independently. Creating a group gives you that flexibility.

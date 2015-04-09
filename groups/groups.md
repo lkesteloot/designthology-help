@@ -18,11 +18,11 @@ Either way, you're going to want to track the details for each component indepen
 
 To create a Group:
 
-1) From the project page, click the New Group button. 
+1) From the project page, click the **New Group** button. 
 
 ![](new-group-button.png)
 
-2) On the New Group screen, enter the information you'd like for the Group Code, Title, Location and Notes Fields, then click Save. 
+2) On the New Group screen, enter the information you'd like for the Group Code, Title, Location and Notes Fields, then click **Save**. 
 
 ![](new-group-screen.png)
 
@@ -30,7 +30,7 @@ To create a Group:
 
 ![](new-group-on-list.png)
 
-4) To create new items for your group, click the group, then click the Add New Item to Group button. 
+4) To create new items for your group, click the group, then click the **Add New Item to Group** button. 
 
 ![](add-new-item-to-group.png)
 
@@ -38,7 +38,7 @@ To create a Group:
 
 ### Collapsing groups on client reports ###
 
-On the Group page, you'll notice a "Collapse group on client reports" checkbox: 
+On the Group page, you'll notice a **Collapse group on client reports** checkbox: 
 
 ![](collapse-group-box.png)
 
