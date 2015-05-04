@@ -22,7 +22,9 @@ And here's how it looks once we've archived the items in the master bedroom:
 The following applies to archived items:
 
 1. They won't appear on the list as you navigate through active items using your arrows.
-2. They won't appear in any reports unless you check the "Show archived items" box in the Project Report.
+2. They won't appear in any reports unless you check the "Show archived items" box in the Project Report:
+
+![](show-archived.png)
 
 
 

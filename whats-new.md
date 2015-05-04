@@ -4,10 +4,13 @@ Order: 50
 # Designthology just keeps getting better! #
 
 ## This week: Keep it current with Archiving!
-April 3, 2015
+May 4th, 2015
 {: .date }
 
+Archiving is the best way to keep completed items from cluttering your workspace. Archived items are still there for you if you need them, they are just moved out of the way so you can focus on what's happening now.
 
+[Learn more about archiving &raquo;](archiving/archiving.html "Designthology help topic: Archiving")
+{: .learn-more }
 
 ## New this week: Groups!
 March 30, 2015
