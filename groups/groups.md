@@ -42,7 +42,7 @@ On the Group page, you'll notice a **Collapse group on client reports** checkbox
 
 ![](collapse-group-box.png)
 
-When this box is checked the entire group will appear as a single line item on cient reports. For example, you may have a Dining Chairs group which contains separate items for the chair frames and the leather that will be applied to them. When this box is checked, these will be combined into one line when you run a report with the Client View option selected.
+When this box is checked the entire group will appear as a single line item on client reports. For example, you may have a Dining Chairs group which contains separate items for the chair frames and the leather that will be applied to them. When this box is checked, these will be combined into one line when you run a report with the Client View option selected.
 
 ### Existing "old style" groups ###
 
